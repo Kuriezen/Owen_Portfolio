@@ -45,6 +45,9 @@
           <button type="button" class="switch" id="soundToggle" aria-pressed="false">
             SOUND: <span id="soundLabel">OFF</span>
           </button>
+          <button type="button" class="switch" id="musicToggle" aria-pressed="false">
+            MUSIC: <span id="musicLabel">OFF</span>
+          </button>
         </div>
       </header>
 
@@ -501,11 +504,13 @@
 
                 <div class="tuner">
                   <p class="tuner-station">
-                    <a href="https://radyonatinfm.com/naval/" target="_blank" rel="noopener">Radyo Natin Naval</a>
-                    <span>Live from Naval, Philippines</span>
+                    <a id="radioName" href="https://www.easyrock.com.ph/" target="_blank" rel="noopener">Easy Rock Manila</a>
+                    <span>Live from <span id="radioPlace">Manila</span> / Station <span id="radioPosition">1 of 5</span></span>
                   </p>
                   <div class="tuner-controls">
+                    <button type="button" class="btn tuner-step" id="radioPrev" aria-label="Previous station">&lt;</button>
                     <button type="button" class="btn" id="radioToggle" aria-pressed="false">Tune in</button>
+                    <button type="button" class="btn tuner-step" id="radioNext" aria-label="Next station">&gt;</button>
                     <label class="tuner-volume">
                       Volume
                       <input type="range" id="radioVolume" min="0" max="1" step="0.05" value="0.6" />
@@ -523,6 +528,12 @@
             <footer class="legal">
                 <p>&copy; <span id="year">2026</span> Owen Kliezer B. Soreño. All rights reserved.</p>
                 <p>Fallout-inspired fan styling. Not affiliated with Bethesda Softworks.</p>
+              <p>
+                Music (public domain recordings, via Wikimedia Commons):
+                <a href="https://commons.wikimedia.org/wiki/File:Ben_Selvin_-_I%27m_Forever_Blowing_Bubbles.ogg" target="_blank" rel="noopener">I'm Forever Blowing Bubbles</a>, Ben Selvin, 1919;
+                <a href="https://commons.wikimedia.org/wiki/File:%22The_Japanese_Sandman%22_(1920)_1920s_dance_band_music_for_flappers_Harry_Raderman%27s_Novelty_Orchestra.opus" target="_blank" rel="noopener">The Japanese Sandman</a>, Harry Raderman, 1920;
+                <a href="https://commons.wikimedia.org/wiki/File:Nicholas_Orlandos_Orchestra_-_Till_We_Meet_Again_(1919).ogg" target="_blank" rel="noopener">Till We Meet Again</a>, Nicholas Orlandos Orchestra, 1919.
+              </p>
               </footer>
           </section>
         </main>

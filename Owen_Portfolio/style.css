@@ -758,10 +758,15 @@ button {
     border-top: 1px solid var(--phosphor-dim);
 }
 
-.tuner-station span {
+.tuner-station > span {
     display: block;
     font-size: 0.875rem;
     color: var(--phosphor-dim);
+}
+
+.tuner-step {
+    min-width: 46px;
+    padding: 0.5rem;
 }
 
 .tuner-controls {
@@ -905,9 +910,22 @@ button {
         font-size: 1.15rem;
     }
 
+    .plate {
+        flex-wrap: nowrap;
+    }
+
+    .plate-model {
+        display: none;
+    }
+
+    .plate-controls {
+        gap: 0.25rem;
+    }
+
     .switch {
-        padding: 0.1rem 0.4rem;
-        font-size: 0.75rem;
+        padding: 0.1rem 0.3rem;
+        font-size: 0.6875rem;
+        white-space: nowrap;
     }
 
     .actions .btn {
@@ -951,6 +969,17 @@ button {
 
     .screen::after {
         display: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .plate-name {
+        display: none;
+    }
+
+    .plate-controls {
+        flex: 1;
+        justify-content: space-between;
     }
 }
 

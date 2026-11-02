@@ -232,25 +232,32 @@ document.querySelectorAll('.station').forEach(station => {
     station.addEventListener('focus', tune);
 });
 
-// Live radio: Radio Browser supplies the station's current stream URL
-const radioStationId = '60e89d48-b895-453c-bfab-a8582ad305ce';
-const radioFallbackUrl = 'https://dj.radyonatinfm.com:8010/naval';
+// Live radio: Radio Browser supplies each station's current stream URL
+const radioStations = [
+    { id: 'f4305944-ac27-4b1e-981d-744d509220c0', name: 'Easy Rock Manila', place: 'Manila', homepage: 'https://www.easyrock.com.ph/', fallbackUrl: 'https://azura.easyrock.com.ph/listen/easy_rock_manila/radio.mp3' },
+    { id: '29d089db-7676-4f24-b16b-f5cdc5b9c07e', name: 'Mellow 94.7', place: 'Metro Manila', homepage: 'https://mellow947.com/', fallbackUrl: 'https://streamer.radio.co/sec36cd5f1/listen' },
+    { id: '42d08428-c760-4a28-b484-3cf0fb03f496', name: '90.7 Love Radio', place: 'Manila', homepage: 'https://www.loveradio.com.ph/radio?station=90.7-love-radio-manila', fallbackUrl: 'https://azura.loveradio.com.ph/listen/love_radio_manila/radio.mp3' },
+    { id: 'd617ca3d-4458-4c94-9a5f-65106263ec51', name: '101.1 Yes FM', place: 'Metro Manila', homepage: 'https://www.yesfm.com.ph/', fallbackUrl: 'https://azura.yesfm.com.ph/listen/yes_fm_manila/radio.mp3' },
+    { id: '60e89d48-b895-453c-bfab-a8582ad305ce', name: 'Radyo Natin Naval', place: 'Naval, Philippines', homepage: 'https://radyonatinfm.com/naval/', fallbackUrl: 'https://dj.radyonatinfm.com:8010/naval' }
+];
 const radioToggle = document.getElementById('radioToggle');
 const radioVolume = document.getElementById('radioVolume');
 const radioStatus = document.getElementById('radioStatus');
 const radioAudio = new Audio();
 let radioOn = false;
+let radioIndex = 0;
+let radioTune = 0;
 
 radioAudio.volume = Number(radioVolume.value);
 
-async function getRadioUrl() {
+async function getRadioUrl(station) {
     try {
-        const response = await fetch(`https://de1.api.radio-browser.info/json/url/${radioStationId}`);
+        const response = await fetch(`https://de1.api.radio-browser.info/json/url/${station.id}`);
         if (!response.ok) throw new Error(response.status);
-        const station = await response.json();
-        return station.url || radioFallbackUrl;
+        const result = await response.json();
+        return result.url || station.fallbackUrl;
     } catch (e) {
-        return radioFallbackUrl;
+        return station.fallbackUrl;
     }
 }
 
@@ -268,6 +275,7 @@ function setWaveLevel(level) {
 
 // Clearing the source closes the connection instead of buffering in the background
 function stopRadio(status) {
+    radioTune++;
     radioAudio.pause();
     radioAudio.removeAttribute('src');
     radioAudio.load();
@@ -275,7 +283,43 @@ function stopRadio(status) {
     setRadioState(false, status);
 }
 
-radioToggle.addEventListener('click', async function() {
+// A newer tune or a stop replaces this one, so late results are ignored
+async function tuneRadio() {
+    const tune = ++radioTune;
+    const station = radioStations[radioIndex];
+
+    setWaveLevel(0.12);
+    setRadioState(true, 'Tuning...');
+    const url = await getRadioUrl(station);
+    if (tune !== radioTune) return;
+
+    radioAudio.src = url;
+    try {
+        await radioAudio.play();
+    } catch (e) {
+        if (tune === radioTune) stopRadio(`${station.name} is unavailable. Try another station.`);
+    }
+}
+
+function changeStation(step) {
+    radioIndex = (radioIndex + step + radioStations.length) % radioStations.length;
+    const station = radioStations[radioIndex];
+    const name = document.getElementById('radioName');
+
+    name.textContent = station.name;
+    name.href = station.homepage;
+    document.getElementById('radioPlace').textContent = station.place;
+    document.getElementById('radioPosition').textContent = `${radioIndex + 1} of ${radioStations.length}`;
+    playTick();
+
+    if (radioOn) tuneRadio();
+    else radioStatus.textContent = 'Radio off';
+}
+
+document.getElementById('radioPrev').addEventListener('click', () => changeStation(-1));
+document.getElementById('radioNext').addEventListener('click', () => changeStation(1));
+
+radioToggle.addEventListener('click', function() {
     playTick();
 
     if (radioOn) {
@@ -283,16 +327,8 @@ radioToggle.addEventListener('click', async function() {
         return;
     }
 
-    setRadioState(true, 'Tuning...');
-    const url = await getRadioUrl();
-    if (!radioOn) return;
-
-    radioAudio.src = url;
-    try {
-        await radioAudio.play();
-    } catch (e) {
-        if (radioOn) stopRadio('Station unavailable. Try again later.');
-    }
+    if (musicOn) stopMusic();
+    tuneRadio();
 });
 
 radioVolume.addEventListener('input', function() {
@@ -309,7 +345,63 @@ radioAudio.addEventListener('waiting', function() {
 });
 
 radioAudio.addEventListener('error', function() {
-    if (radioOn) stopRadio('Station unavailable. Try again later.');
+    if (radioOn) stopRadio(`${radioStations[radioIndex].name} is unavailable. Try another station.`);
+});
+
+// Background music, loaded only once the visitor turns it on
+const musicTracks = ['music/bubbles.mp3', 'music/sandman.mp3', 'music/till.mp3'];
+const musicToggle = document.getElementById('musicToggle');
+const musicAudio = new Audio();
+let musicOn = false;
+let musicTrack = 0;
+
+musicAudio.preload = 'none';
+musicAudio.volume = 0.35;
+
+function setMusicState(on) {
+    musicOn = on;
+    musicToggle.setAttribute('aria-pressed', on);
+    document.getElementById('musicLabel').textContent = on ? 'ON' : 'OFF';
+}
+
+function stopMusic() {
+    musicAudio.pause();
+    setMusicState(false);
+}
+
+async function playMusic() {
+    if (!musicAudio.src) musicAudio.src = musicTracks[musicTrack];
+    try {
+        await musicAudio.play();
+    } catch (e) {
+        if (musicOn) stopMusic();
+    }
+}
+
+function nextMusicTrack() {
+    musicTrack = (musicTrack + 1) % musicTracks.length;
+    musicAudio.src = musicTracks[musicTrack];
+    if (musicOn) playMusic();
+}
+
+musicToggle.addEventListener('click', function() {
+    playTick();
+
+    if (musicOn) {
+        stopMusic();
+        return;
+    }
+
+    // Only one audio source at a time
+    if (radioOn) stopRadio('Radio off');
+    setMusicState(true);
+    playMusic();
+});
+
+musicAudio.addEventListener('ended', nextMusicTrack);
+
+musicAudio.addEventListener('error', function() {
+    if (musicOn) stopMusic();
 });
 
 // Copy email address
