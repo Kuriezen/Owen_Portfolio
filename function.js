@@ -166,6 +166,7 @@ const canvas = document.getElementById('waveform');
 const canvasContext = canvas.getContext('2d');
 let waveFrame = null;
 let waveDetail = 1;
+let waveLevel = 0.12;
 
 function drawWaveform(time) {
     const ratio = window.devicePixelRatio || 1;
@@ -207,7 +208,7 @@ function drawWaveform(time) {
         const envelope = Math.sin(position * Math.PI);
         const wave = Math.sin(position * 14 * waveDetail + phase)
             + 0.5 * Math.sin(position * 37 * waveDetail - phase * 1.7);
-        const y = height / 2 + wave * envelope * height * 0.26;
+        const y = height / 2 + wave * envelope * height * 0.26 * waveLevel;
         if (x === 0) canvasContext.moveTo(x, y);
         else canvasContext.lineTo(x, y);
     }
@@ -229,6 +230,86 @@ document.querySelectorAll('.station').forEach(station => {
     }
     station.addEventListener('mouseenter', tune);
     station.addEventListener('focus', tune);
+});
+
+// Live radio: Radio Browser supplies the station's current stream URL
+const radioStationId = '60e89d48-b895-453c-bfab-a8582ad305ce';
+const radioFallbackUrl = 'https://dj.radyonatinfm.com:8010/naval';
+const radioToggle = document.getElementById('radioToggle');
+const radioVolume = document.getElementById('radioVolume');
+const radioStatus = document.getElementById('radioStatus');
+const radioAudio = new Audio();
+let radioOn = false;
+
+radioAudio.volume = Number(radioVolume.value);
+
+async function getRadioUrl() {
+    try {
+        const response = await fetch(`https://de1.api.radio-browser.info/json/url/${radioStationId}`);
+        if (!response.ok) throw new Error(response.status);
+        const station = await response.json();
+        return station.url || radioFallbackUrl;
+    } catch (e) {
+        return radioFallbackUrl;
+    }
+}
+
+function setRadioState(on, status) {
+    radioOn = on;
+    radioToggle.textContent = on ? 'Stop radio' : 'Tune in';
+    radioToggle.setAttribute('aria-pressed', on);
+    radioStatus.textContent = status;
+}
+
+function setWaveLevel(level) {
+    waveLevel = level;
+    if (reducedMotion) requestAnimationFrame(drawWaveform);
+}
+
+// Clearing the source closes the connection instead of buffering in the background
+function stopRadio(status) {
+    radioAudio.pause();
+    radioAudio.removeAttribute('src');
+    radioAudio.load();
+    setWaveLevel(0.12);
+    setRadioState(false, status);
+}
+
+radioToggle.addEventListener('click', async function() {
+    playTick();
+
+    if (radioOn) {
+        stopRadio('Radio off');
+        return;
+    }
+
+    setRadioState(true, 'Tuning...');
+    const url = await getRadioUrl();
+    if (!radioOn) return;
+
+    radioAudio.src = url;
+    try {
+        await radioAudio.play();
+    } catch (e) {
+        if (radioOn) stopRadio('Station unavailable. Try again later.');
+    }
+});
+
+radioVolume.addEventListener('input', function() {
+    radioAudio.volume = Number(this.value);
+});
+
+radioAudio.addEventListener('playing', function() {
+    setWaveLevel(1);
+    if (radioOn) radioStatus.textContent = 'On air';
+});
+
+radioAudio.addEventListener('waiting', function() {
+    if (radioOn) radioStatus.textContent = 'Buffering...';
+});
+
+radioAudio.addEventListener('error', function() {
+    if (radioOn) stopRadio('Station unavailable. Try again later.');
 });
 
 // Copy email address

@@ -752,6 +752,50 @@ button {
     font-size: 0.9375rem;
 }
 
+.tuner {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--phosphor-dim);
+}
+
+.tuner-station span {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--phosphor-dim);
+}
+
+.tuner-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin-top: 0.5rem;
+}
+
+.tuner-volume {
+    flex: 1 1 10rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.875rem;
+}
+
+.tuner-volume input {
+    flex: 1;
+    min-width: 0;
+    height: 28px;
+    accent-color: var(--phosphor);
+}
+
+.tuner-status {
+    margin-top: 0.4rem;
+}
+
+.tuner-credit {
+    font-size: 0.8125rem;
+    color: var(--phosphor-dim);
+}
+
 .legal {
     margin-top: 1.25rem;
     padding-top: 0.6rem;
@@ -948,6 +992,7 @@ button {
     .glyph,
     .actions,
     #waveform,
+    .tuner,
     .copy-status,
     .screen::before,
     .screen::after,
