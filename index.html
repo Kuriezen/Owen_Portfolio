@@ -60,6 +60,7 @@
           <a class="tab" href="#services"><b>SPECIAL</b><small>Services</small></a>
           <a class="tab" href="#experience"><b>DATA</b><small>Experience</small></a>
           <a class="tab" href="#contact"><b>RADIO</b><small>Contact</small></a>
+          <a class="tab" href="#game"><b>PLAY</b><small>Game</small></a>
         </nav>
 
         <main class="panels" id="panels" tabindex="-1">
@@ -500,28 +501,29 @@
                   >
                   <button type="button" class="btn" id="copyEmail">Copy email</button>
                 </div>
+                <p class="signal-hint">To speed things up, include what your business does and what you need help with.</p>
                 <p class="copy-status" id="copyStatus" role="status"></p>
+              </div>
 
-                <div class="tuner">
-                  <p class="tuner-station">
-                    <a id="radioName" href="https://www.easyrock.com.ph/" target="_blank" rel="noopener">Easy Rock Manila</a>
-                    <span>Live from <span id="radioPlace">Manila</span> / Station <span id="radioPosition">1 of 5</span></span>
-                  </p>
-                  <div class="tuner-controls">
-                    <button type="button" class="btn tuner-step" id="radioPrev" aria-label="Previous station">&lt;</button>
-                    <button type="button" class="btn" id="radioToggle" aria-pressed="false">Tune in</button>
-                    <button type="button" class="btn tuner-step" id="radioNext" aria-label="Next station">&gt;</button>
-                    <label class="tuner-volume">
-                      Volume
-                      <input type="range" id="radioVolume" min="0" max="1" step="0.05" value="0.6" />
-                    </label>
-                  </div>
-                  <p class="tuner-status" id="radioStatus" role="status">Radio off</p>
-                  <p class="tuner-credit">
-                    Stream from the
-                    <a href="https://www.radio-browser.info/" target="_blank" rel="noopener">Radio Browser</a> API
-                  </p>
+              <div class="tuner">
+                <p class="tuner-station">
+                  <a id="radioName" href="https://www.easyrock.com.ph/" target="_blank" rel="noopener">Easy Rock Manila</a>
+                  <span>Live from <span id="radioPlace">Manila</span> / Station <span id="radioPosition">1 of 5</span></span>
+                </p>
+                <div class="tuner-controls">
+                  <button type="button" class="btn tuner-step" id="radioPrev" aria-label="Previous station">&lt;</button>
+                  <button type="button" class="btn" id="radioToggle" aria-pressed="false">Tune in</button>
+                  <button type="button" class="btn tuner-step" id="radioNext" aria-label="Next station">&gt;</button>
+                  <label class="tuner-volume">
+                    Volume
+                    <input type="range" id="radioVolume" min="0" max="1" step="0.05" value="0.6" />
+                  </label>
                 </div>
+                <p class="tuner-status" id="radioStatus" role="status">Radio off</p>
+                <p class="tuner-credit">
+                  Stream from the
+                  <a href="https://www.radio-browser.info/" target="_blank" rel="noopener">Radio Browser</a> API
+                </p>
               </div>
             </div>
 
@@ -536,16 +538,65 @@
               </p>
               </footer>
           </section>
+
+          <!-- PLAY -->
+          <section class="panel" id="game" tabindex="-1">
+            <header class="panel-head">
+              <h2>Bunker Crawl</h2>
+              <p>An original mini-game, coded from scratch in plain JavaScript.</p>
+            </header>
+            <div class="game">
+              <div class="game-stage" id="gameStage">
+                <canvas id="gameCanvas" width="320" height="200" tabindex="-1" aria-label="Bunker Crawl game view"></canvas>
+                <div class="game-overlay" id="gameOverlay">
+                  <h3 id="gameOverlayTitle">Bunker Crawl</h3>
+                  <p id="gameOverlayText">Destroy every hostile in all three sectors, then reach each exit terminal.</p>
+                  <div class="actions">
+                    <button type="button" class="btn btn-primary" id="gameStart">Start game</button>
+                    <a
+                      class="btn"
+                      id="gameCta"
+                      href="mailto:owensoreno@gmail.com?subject=Consultation%20request"
+                      hidden
+                      >Request consultation</a
+                    >
+                  </div>
+                  <p class="game-help game-help-keys">WASD or arrows to move / Mouse or arrows to aim / Click or Space to fire / Esc to pause</p>
+                  <p class="game-help game-help-touch">Hold the on-screen buttons to move, turn, and fire</p>
+                </div>
+              </div>
+
+              <div class="game-hud" aria-label="Game status">
+                <span class="game-health">HP <span class="bar" aria-hidden="true"><span class="game-hp-fill" id="gameHp"></span></span> <b id="gameHpValue">100</b></span>
+                <span>AMMO <b id="gameAmmo">30</b></span>
+                <span>SCRAP <b id="gameScrap">0</b></span>
+                <span>HOSTILES <b id="gameHostiles">0</b></span>
+                <span>SECTOR <b id="gameSector">1/3</b></span>
+              </div>
+              <p class="game-message" id="gameMessage" role="status"></p>
+
+              <div class="game-touch" aria-label="Game controls">
+                <div class="game-pad">
+                  <button type="button" class="game-key game-up" data-game-input="forward" aria-label="Move forward">^</button>
+                  <button type="button" class="game-key game-left" data-game-input="turnLeft" aria-label="Turn left">&lt;</button>
+                  <button type="button" class="game-key game-down" data-game-input="back" aria-label="Move back">v</button>
+                  <button type="button" class="game-key game-right" data-game-input="turnRight" aria-label="Turn right">&gt;</button>
+                </div>
+                <button type="button" class="game-key game-fire" data-game-input="fire">Fire</button>
+              </div>
+            </div>
+          </section>
         </main>
 
         <div class="status-bar">
           <span>LOC Nasipit, PH</span>
           <span>PHT <time id="clock">--:--</time></span>
-          <span class="key-hint">[1-5] Switch tabs</span>
+          <span class="key-hint">[1-6] Switch tabs</span>
         </div>
       </div>
     </div>
 
     <script src="function.js"></script>
+    <script src="game.js"></script>
   </body>
 </html>

@@ -752,10 +752,27 @@ button {
     font-size: 0.9375rem;
 }
 
+.stations {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.signal {
+    grid-column: 2;
+    grid-row: 1 / 3;
+}
+
 .tuner {
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
+    grid-column: 1;
+    grid-row: 2;
+    padding: 0.75rem 0.6rem 0;
     border-top: 1px solid var(--phosphor-dim);
+}
+
+.signal-hint {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--phosphor-dim);
 }
 
 .tuner-station > span {
@@ -799,6 +816,207 @@ button {
 .tuner-credit {
     font-size: 0.8125rem;
     color: var(--phosphor-dim);
+}
+
+/* Game */
+.game {
+    --game-width: min(100%, calc(clamp(180px, 100dvh - 420px, 520px) * 1.6));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-stage {
+    position: relative;
+    width: var(--game-width);
+    aspect-ratio: 8 / 5;
+    border: 1px solid var(--phosphor-dim);
+    background: var(--screen-edge);
+}
+
+.game-stage.is-hurt::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 50px 12px var(--phosphor);
+    opacity: 0;
+    animation: game-hurt 0.3s ease-out;
+}
+
+@keyframes game-hurt {
+    from {
+        opacity: 0.8;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    cursor: crosshair;
+}
+
+#gameCanvas:focus {
+    outline: none;
+}
+
+.game-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    text-align: center;
+    background: rgba(1, 6, 3, 0.86);
+}
+
+.game-overlay h3 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1;
+    text-shadow: 0 0 12px var(--phosphor-glow);
+}
+
+.game-overlay .actions {
+    justify-content: center;
+    margin-top: 0.6rem;
+}
+
+.game-help {
+    margin-top: 0.6rem;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    color: var(--phosphor-dim);
+}
+
+.game-help-touch {
+    display: none;
+}
+
+.game-hud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 1rem;
+    width: var(--game-width);
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+}
+
+.game-hud b {
+    font-weight: 400;
+    color: var(--phosphor);
+}
+
+.game-hud > span {
+    color: var(--phosphor-dim);
+}
+
+.game-health {
+    flex: 1 1 11rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-health .bar {
+    flex: 1;
+    max-width: 12rem;
+    height: 12px;
+}
+
+.game-hp-fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(90deg, var(--phosphor) 0 7px, transparent 7px 10px);
+}
+
+.game-message {
+    width: var(--game-width);
+    min-height: 1.4em;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.game-touch {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 0.4rem;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.game-pad {
+    display: grid;
+    grid-template: repeat(2, 48px) / repeat(3, 56px);
+    gap: 4px;
+}
+
+.game-key {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--phosphor);
+    border: 1px solid var(--phosphor);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.game-key:active {
+    color: var(--screen);
+    background: var(--phosphor);
+}
+
+.game-up {
+    grid-area: 1 / 2;
+}
+
+.game-left {
+    grid-area: 2 / 1;
+}
+
+.game-down {
+    grid-area: 2 / 2;
+}
+
+.game-right {
+    grid-area: 2 / 3;
+}
+
+.game-fire {
+    width: 104px;
+    height: 100px;
+    text-transform: uppercase;
+}
+
+@media (pointer: coarse) {
+    .game-touch {
+        display: flex;
+    }
+
+    .game-help-keys {
+        display: none;
+    }
+
+    .game-help-touch {
+        display: block;
+    }
+
+    #game .panel-head {
+        display: none;
+    }
 }
 
 .legal {
@@ -846,6 +1064,17 @@ button {
 
     .results {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stations,
+    .signal,
+    .tuner {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .tuner {
+        padding-inline: 0;
     }
 
     .service,
@@ -977,6 +1206,15 @@ button {
         display: none;
     }
 
+    .tab b {
+        font-size: 1.05rem;
+        letter-spacing: 0;
+    }
+
+    .tab small {
+        font-size: 0.625rem;
+    }
+
     .plate-controls {
         flex: 1;
         justify-content: space-between;
@@ -1012,6 +1250,10 @@ button {
         text-shadow: none;
     }
 
+    #game {
+        display: none !important;
+    }
+
     .plate,
     .tabs,
     .status-bar,
@@ -1022,6 +1264,7 @@ button {
     .actions,
     #waveform,
     .tuner,
+    .signal-hint,
     .copy-status,
     .screen::before,
     .screen::after,

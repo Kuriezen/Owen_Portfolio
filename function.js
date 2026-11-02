@@ -106,6 +106,9 @@ window.addEventListener('hashchange', function() {
 document.addEventListener('keydown', function(e) {
     if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
 
+    // The game uses these keys while it is being played
+    if (document.body.dataset.game === 'running') return;
+
     const current = tabs.findIndex(tab => tab.hasAttribute('aria-current'));
     let next = -1;
 
