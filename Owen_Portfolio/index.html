@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Owen Kliezer B. Soreño - GoHighLevel Specialist, Web Developer, Data Analyst</title>
+    <title>Owen Kliezer B. Soreño - Automation Specialist, Web Developer, Data Analyst</title>
     <meta
       name="description"
-      content="Owen Kliezer B. Soreño is a GoHighLevel specialist, web developer, and data analyst building CRM pipelines, funnels, and marketing automation for startups and small businesses."
+      content="Owen Kliezer B. Soreño is an automation specialist, web developer, and data analyst building workflows, websites, funnels, and dashboards for startups and small businesses."
     />
     <meta name="theme-color" content="#031108" />
     <link
@@ -21,6 +21,9 @@
     />
     <link rel="stylesheet" href="style.css" />
     <script>
+      // Tabs only take over the layout when JS can run them
+      document.documentElement.classList.add("js");
+
       // Apply the saved screen color before first paint
       try {
         if (localStorage.getItem("phosphor") === "amber") {
@@ -61,38 +64,39 @@
 
         <main class="panels" id="panels" tabindex="-1">
           <!-- STAT -->
-          <section class="panel stat" id="home" tabindex="-1">
-            <div class="stat-text">
-              <p class="eyebrow">&gt; PERSONNEL FILE LOADED</p>
-              <h1>Owen Kliezer B. Soreño</h1>
-              <p class="role-line">GoHighLevel Specialist / Web Developer / Data Analyst</p>
-              <p class="lede">
-                I build the CRM pipelines, funnels, and automated follow-ups that
-                help startups and small businesses respond to every lead.
-              </p>
-              <p class="lede-more">
-                From lead response and appointment reminders to SMS compliance and
-                dashboard reports, I connect the marketing tools your business
-                runs on.
-              </p>
-              <div class="actions">
-                <a
-                  class="btn btn-primary"
-                  href="mailto:owensoreno@gmail.com?subject=Consultation%20request&body=Hi%20Owen%2C%0A%0AMy%20business%3A%0AWhat%20I%20need%20help%20with%3A%0A"
-                  >Request consultation</a
-                >
-                <a class="btn" href="#experience">View experience</a>
+          <section class="panel" id="home" tabindex="-1">
+            <div class="bento stat-grid">
+              <div class="tile hero">
+                <p class="eyebrow">&gt; PERSONNEL FILE LOADED</p>
+                <h1>Owen Kliezer B. Soreño</h1>
+                <p class="role-line">Automation Specialist / Web Developer / Data Analyst</p>
+                <p class="lede">
+                  I automate the busywork that slows businesses down, and build the
+                  websites, funnels, and dashboards that go with it.
+                </p>
+                <p class="lede-more">
+                  My work covers workflow automation, web development, data analysis,
+                  CRM setup, ad tracking, and client operations, using tools like
+                  Zapier, n8n, GoHighLevel, and Python.
+                </p>
+                <div class="actions">
+                  <a
+                    class="btn btn-primary"
+                    href="mailto:owensoreno@gmail.com?subject=Consultation%20request&body=Hi%20Owen%2C%0A%0AMy%20business%3A%0AWhat%20I%20need%20help%20with%3A%0A"
+                    >Request consultation</a
+                  >
+                  <a class="btn btn-secondary" href="#experience">View experience</a>
+                </div>
               </div>
-            </div>
 
-            <aside class="id-card" aria-label="Profile summary">
-              <div class="id-photo">
+              <div class="tile id-photo">
                 <img src="image/profile.jpg" alt="Portrait of Owen Kliezer B. Soreño" />
               </div>
-              <dl class="id-data">
-                <div>
+
+              <dl class="tile id-data">
+                <div class="id-class">
                   <dt>CLASS</dt>
-                  <dd>GoHighLevel Specialist</dd>
+                  <dd>Automation Specialist</dd>
                 </div>
                 <div>
                   <dt>STATUS</dt>
@@ -102,7 +106,7 @@
                   <dt>BASE</dt>
                   <dd>Nasipit, Agusan del Norte</dd>
                 </div>
-                <div>
+                <div class="id-fields">
                   <dt>FIELDS</dt>
                   <dd>Home services, digital marketing, wellness</dd>
                 </div>
@@ -111,7 +115,24 @@
                   <dd>BSIT, Caraga State University (expected 2027)</dd>
                 </div>
               </dl>
-            </aside>
+
+              <div class="tile stat-tile">
+                <p class="stat-num">37%</p>
+                <p><b>Conversion lift</b> <span>Custom lead-generation funnel for a digital marketing client</span></p>
+              </div>
+              <div class="tile stat-tile">
+                <p class="stat-num">46%</p>
+                <p><b>Email open rate</b> <span>7-step nurturing sequence, with an 18% CTR</span></p>
+              </div>
+              <div class="tile stat-tile">
+                <p class="stat-num">&lt;1 WK</p>
+                <p><b>CRM migration</b> <span>3 pipelines and 2 years of records, zero downtime</span></p>
+              </div>
+              <div class="tile stat-tile">
+                <p class="stat-num">80+</p>
+                <p><b>Client tasks</b> <span>Operational and support work, delivered on deadline</span></p>
+              </div>
+            </div>
           </section>
 
           <!-- INV -->
@@ -120,9 +141,9 @@
               <h2>Inventory</h2>
               <p>Technical skills, languages, and the tools I work with.</p>
             </header>
-            <div class="inv">
-              <div>
-                <h3 class="group-title">Weapons <span>Programming languages</span></h3>
+            <div class="bento inv-grid">
+              <div class="tile inv-weapons">
+                <h3 class="tile-label">Weapons / Programming languages</h3>
                 <ul class="inv-list">
                   <li class="inv-row">
                     <span class="inv-name">HTML5</span>
@@ -157,14 +178,24 @@
                 </ul>
               </div>
 
-              <div>
-                <h3 class="group-title">Gear <span>Tools &amp; platforms</span></h3>
-                <h4 class="rank">Expert</h4>
+              <div class="tile inv-expert">
+                <h3 class="tile-label">Gear / Expert</h3>
                 <ul class="gear-list">
                   <li>GoHighLevel</li>
                   <li>A2P 10DLC</li>
                 </ul>
-                <h4 class="rank">Advanced</h4>
+              </div>
+              <div class="tile inv-intermediate">
+                <h3 class="tile-label">Gear / Intermediate</h3>
+                <ul class="gear-list">
+                  <li>n8n</li>
+                  <li>Vapi AI</li>
+                  <li>Power BI</li>
+                  <li>Tableau</li>
+                </ul>
+              </div>
+              <div class="tile inv-advanced">
+                <h3 class="tile-label">Gear / Advanced</h3>
                 <ul class="gear-list">
                   <li>Zapier</li>
                   <li>Closebot</li>
@@ -173,12 +204,18 @@
                   <li>Excel/Google Sheets</li>
                   <li>Pandas</li>
                 </ul>
-                <h4 class="rank">Intermediate</h4>
+              </div>
+              <div class="tile inv-other">
+                <h3 class="tile-label">Gear / Web &amp; productivity</h3>
                 <ul class="gear-list">
-                  <li>n8n</li>
-                  <li>Vapi AI</li>
-                  <li>Power BI</li>
-                  <li>Tableau</li>
+                  <li>Duda</li>
+                  <li>Shopify</li>
+                  <li>Google Workspace</li>
+                  <li>Microsoft Office</li>
+                  <li>ClickUp</li>
+                  <li>Asana</li>
+                  <li>Trello</li>
+                  <li>Slack</li>
                 </ul>
               </div>
             </div>
@@ -188,52 +225,65 @@
           <section class="panel" id="services" tabindex="-1">
             <header class="panel-head">
               <h2>S.P.E.C.I.A.L.</h2>
-              <p>Nine services. Seven of them happen to spell it out.</p>
+              <p>Seven core services spell it out. The rest are perks.</p>
             </header>
-            <div class="readout" data-readout>
-              <div class="readout-list special-list" role="tablist" aria-orientation="vertical" aria-label="Services">
-                <button type="button" role="tab" id="tab-s" aria-controls="svc-s"><span class="letter">S</span><span class="name">SMS Compliance</span></button>
-                <button type="button" role="tab" id="tab-p" aria-controls="svc-p"><span class="letter">P</span><span class="name">Process Automation</span></button>
-                <button type="button" role="tab" id="tab-e" aria-controls="svc-e"><span class="letter">E</span><span class="name">Email Marketing Automation</span></button>
-                <button type="button" role="tab" id="tab-c" aria-controls="svc-c"><span class="letter">C</span><span class="name">CRM Customization</span></button>
-                <button type="button" role="tab" id="tab-i" aria-controls="svc-i"><span class="letter">I</span><span class="name">Integrated Websites</span></button>
-                <button type="button" role="tab" id="tab-a" aria-controls="svc-a"><span class="letter">A</span><span class="name">Ad Campaign Management</span></button>
-                <button type="button" role="tab" id="tab-l" aria-controls="svc-l"><span class="letter">L</span><span class="name">Lead Generation</span></button>
-                <p class="list-label" role="presentation">Perks</p>
-                <button type="button" role="tab" class="perk" id="tab-f" aria-controls="svc-f"><span class="letter" aria-hidden="true">+</span><span class="name">Funnel Design</span></button>
-                <button type="button" role="tab" class="perk" id="tab-b" aria-controls="svc-b"><span class="letter" aria-hidden="true">+</span><span class="name">Chatbot Integration</span></button>
+            <div class="bento readout special-grid" data-readout>
+              <div class="readout-list" role="tablist" aria-orientation="vertical" aria-label="Services">
+                <div class="tile special-attrs" role="presentation">
+                  <button type="button" role="tab" id="tab-s" aria-controls="svc-s"><span class="letter">S</span><span class="name">SMS Compliance</span></button>
+                  <button type="button" role="tab" id="tab-p" aria-controls="svc-p"><span class="letter">P</span><span class="name">Process Automation</span></button>
+                  <button type="button" role="tab" id="tab-e" aria-controls="svc-e"><span class="letter">E</span><span class="name">Email Marketing Automation</span></button>
+                  <button type="button" role="tab" id="tab-c" aria-controls="svc-c"><span class="letter">C</span><span class="name">CRM Customization</span></button>
+                  <button type="button" role="tab" id="tab-i" aria-controls="svc-i"><span class="letter">I</span><span class="name">Integrated Websites</span></button>
+                  <button type="button" role="tab" id="tab-a" aria-controls="svc-a"><span class="letter">A</span><span class="name">Ad Campaign Management</span></button>
+                  <button type="button" role="tab" id="tab-l" aria-controls="svc-l"><span class="letter">L</span><span class="name">Lead Generation</span></button>
+                </div>
+                <div class="tile special-perks" role="presentation">
+                  <p class="tile-label" role="presentation">Perks</p>
+                  <button type="button" role="tab" id="tab-f" aria-controls="svc-f"><span class="name">Funnel Design</span></button>
+                  <button type="button" role="tab" id="tab-b" aria-controls="svc-b"><span class="name">Chatbots</span></button>
+                  <button type="button" role="tab" id="tab-v" aria-controls="svc-v"><span class="name">AI Voice Agents</span></button>
+                  <button type="button" role="tab" id="tab-w" aria-controls="svc-w"><span class="name">Webhooks &amp; APIs</span></button>
+                  <button type="button" role="tab" id="tab-t" aria-controls="svc-t"><span class="name">Ad Tracking</span></button>
+                  <button type="button" role="tab" id="tab-m" aria-controls="svc-m"><span class="name">Data Migration</span></button>
+                  <button type="button" role="tab" id="tab-o" aria-controls="svc-o"><span class="name">Admin Operations</span></button>
+                  <button type="button" role="tab" id="tab-u" aria-controls="svc-u"><span class="name">Customer Support</span></button>
+                  <button type="button" role="tab" id="tab-k" aria-controls="svc-k"><span class="name">Web &amp; E-Commerce</span></button>
+                  <button type="button" role="tab" id="tab-n" aria-controls="svc-n"><span class="name">Content Publishing</span></button>
+                  <button type="button" role="tab" id="tab-r" aria-controls="svc-r"><span class="name">Productivity Tools</span></button>
+                </div>
               </div>
 
-              <div class="readout-detail">
+              <div class="tile readout-detail">
                 <article class="service" role="tabpanel" id="svc-s" aria-labelledby="tab-s">
                   <span class="glyph" aria-hidden="true">S</span>
                   <h3>SMS Compliance</h3>
-                  <p>A2P 10DLC registration and SMS compliance management for successful campaigns.</p>
-                  <p class="record"><b>FIELD RECORD</b> Managed A2P 10DLC SMS registration and compliance with successful campaign launches.</p>
+                  <p>A2P 10DLC brand and campaign registration, SMS compliance verification, and deliverability.</p>
+                  <p class="record"><b>FIELD RECORD</b> Handled A2P 10DLC registration, Brand/Campaign approvals, and carrier compliance across client sub-accounts.</p>
                 </article>
                 <article class="service" role="tabpanel" id="svc-p" aria-labelledby="tab-p">
                   <span class="glyph" aria-hidden="true">P</span>
                   <h3>Process Automation</h3>
-                  <p>Automation and integration via Zapier to streamline your business operations.</p>
-                  <p class="record"><b>FIELD RECORD</b> Integrated n8n, Zapier, and Closebot for advanced automation.</p>
+                  <p>Advanced logic, triggers, and multi-branch sequences via Zapier and n8n to streamline your business operations.</p>
+                  <p class="record"><b>FIELD RECORD</b> Integrated Zapier, n8n, and Closebot to synchronize cross-platform client workflows.</p>
                 </article>
                 <article class="service" role="tabpanel" id="svc-e" aria-labelledby="tab-e">
                   <span class="glyph" aria-hidden="true">E</span>
                   <h3>Email Marketing Automation</h3>
-                  <p>Email marketing and drip campaigns that nurture leads and increase conversions.</p>
-                  <p class="record"><b>FIELD RECORD</b> Built 7-step email sequences, increasing engagement and conversion rates.</p>
+                  <p>Multi-step drip campaigns, segmentation, trigger-based follow-ups, and deliverability tracking.</p>
+                  <p class="record"><b>FIELD RECORD</b> Engineered a targeted 7-step email nurturing sequence achieving a 46% open rate and 18% CTR.</p>
                 </article>
                 <article class="service" role="tabpanel" id="svc-c" aria-labelledby="tab-c">
                   <span class="glyph" aria-hidden="true">C</span>
                   <h3>CRM Customization</h3>
-                  <p>GoHighLevel CRM customization and pipeline setup tailored to your business needs.</p>
-                  <p class="record"><b>FIELD RECORD</b> Migrated CRM data, customized pipelines, and created tailored dashboard reports.</p>
+                  <p>CRM setup, multi-tier pipeline management, sub-account configuration, and custom fields tailored to your business needs.</p>
+                  <p class="record"><b>FIELD RECORD</b> Provide end-to-end GoHighLevel setups and custom CRM architecture for startups, agencies, and small businesses.</p>
                 </article>
                 <article class="service" role="tabpanel" id="svc-i" aria-labelledby="tab-i">
                   <span class="glyph" aria-hidden="true">I</span>
                   <h3>Integrated Websites</h3>
-                  <p>Website design and calendar integration with a seamless user experience.</p>
-                  <p class="record"><b>FIELD RECORD</b> Delivered end-to-end marketing solutions integrating GoHighLevel with third-party tools.</p>
+                  <p>Website design, form builders, and calendar integration with a seamless user experience.</p>
+                  <p class="record"><b>FIELD RECORD</b> Design and build responsive landing pages and dynamic appointment booking systems.</p>
                 </article>
                 <article class="service" role="tabpanel" id="svc-a" aria-labelledby="tab-a">
                   <span class="glyph" aria-hidden="true">A</span>
@@ -243,19 +293,72 @@
                 <article class="service" role="tabpanel" id="svc-l" aria-labelledby="tab-l">
                   <span class="glyph" aria-hidden="true">L</span>
                   <h3>Lead Generation</h3>
-                  <p>Lead generation and nurturing strategies that convert prospects to customers.</p>
-                  <p class="record"><b>FIELD RECORD</b> Developed automated workflows for lead response, appointment reminders, job scheduling, and invoice follow-ups.</p>
+                  <p>Lead generation, automated qualification, appointment scheduling, and invoice follow-ups.</p>
+                  <p class="record"><b>FIELD RECORD</b> Developed automated workflows for instant lead response, booking confirmations, dispatching, and automated invoice reminders.</p>
                 </article>
                 <article class="service" role="tabpanel" id="svc-f" aria-labelledby="tab-f">
                   <span class="glyph" aria-hidden="true">+</span>
                   <h3>Funnel Design</h3>
-                  <p>High-converting funnel creation and landing page design that drives results.</p>
-                  <p class="record"><b>FIELD RECORD</b> Built high-converting funnels for clients across multiple industries.</p>
+                  <p>Landing pages, high-converting sales funnels, form builders, and calendar integrations.</p>
+                  <p class="record"><b>FIELD RECORD</b> Designed a custom lead-generation funnel that increased conversion rates by 37% for a digital marketing client.</p>
                 </article>
                 <article class="service" role="tabpanel" id="svc-b" aria-labelledby="tab-b">
                   <span class="glyph" aria-hidden="true">+</span>
-                  <h3>Chatbot Integration</h3>
+                  <h3>Chatbots &amp; Conversational AI</h3>
                   <p>Advanced chatbot integrations including Closebot, Vapi, and Conversational AI.</p>
+                  <p class="record"><b>FIELD RECORD</b> Implemented AI-driven voice and chat prompt workflows for lead outreach, reducing manual workload and boosting lead response rates.</p>
+                </article>
+                <article class="service" role="tabpanel" id="svc-v" aria-labelledby="tab-v">
+                  <span class="glyph" aria-hidden="true">+</span>
+                  <h3>AI Voice Agents</h3>
+                  <p>Vapi voice agents and automated call prompt workflows.</p>
+                  <p class="record"><b>FIELD RECORD</b> Implement conversational AI call prompting, voice agents, and chatbot workflows to automate outreach and qualification.</p>
+                </article>
+                <article class="service" role="tabpanel" id="svc-w" aria-labelledby="tab-w">
+                  <span class="glyph" aria-hidden="true">+</span>
+                  <h3>Webhooks &amp; APIs</h3>
+                  <p>Custom API and webhook automation via Zapier and n8n.</p>
+                  <p class="record"><b>FIELD RECORD</b> Built webhooks and multi-branch automation routines using n8n, Zapier, and GoHighLevel to sync client databases.</p>
+                </article>
+                <article class="service" role="tabpanel" id="svc-t" aria-labelledby="tab-t">
+                  <span class="glyph" aria-hidden="true">+</span>
+                  <h3>Ad Tracking</h3>
+                  <p>Facebook Pixel and Google Ads conversion tracking, UTM tagging, and dashboard reporting.</p>
+                  <p class="record"><b>FIELD RECORD</b> Set up conversion tracking, UTM parameters, and performance dashboards for Facebook and Google Ads campaigns.</p>
+                </article>
+                <article class="service" role="tabpanel" id="svc-m" aria-labelledby="tab-m">
+                  <span class="glyph" aria-hidden="true">+</span>
+                  <h3>Data Migration</h3>
+                  <p>CRM database migration, pipeline cleanup, contact import/export, and system audits.</p>
+                  <p class="record"><b>FIELD RECORD</b> Migrated 3 multi-stage pipelines and 2 years of complete client records in under 1 week with zero downtime.</p>
+                </article>
+                <article class="service" role="tabpanel" id="svc-o" aria-labelledby="tab-o">
+                  <span class="glyph" aria-hidden="true">+</span>
+                  <h3>Administrative Operations</h3>
+                  <p>Calendar coordination, inbox management, and task prioritization.</p>
+                  <p class="record"><b>FIELD RECORD</b> Managed CRM updates, client communications, appointment scheduling, and cross-functional task tracking.</p>
+                </article>
+                <article class="service" role="tabpanel" id="svc-u" aria-labelledby="tab-u">
+                  <span class="glyph" aria-hidden="true">+</span>
+                  <h3>Customer Support</h3>
+                  <p>Multi-channel email and chat support with rapid resolution times.</p>
+                  <p class="record"><b>FIELD RECORD</b> Executed 80+ operational and client support tasks across diverse accounts with high accuracy and strict adherence to deadlines.</p>
+                </article>
+                <article class="service" role="tabpanel" id="svc-k" aria-labelledby="tab-k">
+                  <span class="glyph" aria-hidden="true">+</span>
+                  <h3>Web &amp; E-Commerce</h3>
+                  <p>Duda and Shopify content updates, page modifications, and basic SEO.</p>
+                </article>
+                <article class="service" role="tabpanel" id="svc-n" aria-labelledby="tab-n">
+                  <span class="glyph" aria-hidden="true">+</span>
+                  <h3>Content Publishing</h3>
+                  <p>Blog formatting, article publishing, brand assets, and social scheduling.</p>
+                  <p class="record"><b>FIELD RECORD</b> Published and formatted SEO-friendly blog content across client Duda and Shopify websites while maintaining brand guidelines.</p>
+                </article>
+                <article class="service" role="tabpanel" id="svc-r" aria-labelledby="tab-r">
+                  <span class="glyph" aria-hidden="true">+</span>
+                  <h3>Productivity Tools</h3>
+                  <p>Google Workspace, Microsoft Office, ClickUp, Asana, Trello, and Slack.</p>
                 </article>
               </div>
             </div>
@@ -267,46 +370,56 @@
               <h2>Quest Log</h2>
               <p>Professional journey and education.</p>
             </header>
-            <div class="readout" data-readout>
-              <div class="readout-list quest-list" role="tablist" aria-orientation="vertical" aria-label="Experience and education">
-                <p class="list-label" role="presentation">Experience</p>
-                <button type="button" role="tab" id="tab-q1" aria-controls="quest-1"><span class="quest-mark is-active" aria-hidden="true"></span><span class="name">Freelance GoHighLevel Specialist</span></button>
-                <button type="button" role="tab" id="tab-q2" aria-controls="quest-2"><span class="quest-mark" aria-hidden="true"></span><span class="name">GoHighLevel Specialist</span></button>
-                <button type="button" role="tab" id="tab-q3" aria-controls="quest-3"><span class="quest-mark is-active" aria-hidden="true"></span><span class="name">Data Analyst</span></button>
-                <p class="list-label" role="presentation">Training</p>
-                <button type="button" role="tab" id="tab-q4" aria-controls="quest-4"><span class="quest-mark is-active" aria-hidden="true"></span><span class="name">BS Information Technology</span></button>
-                <button type="button" role="tab" id="tab-q5" aria-controls="quest-5"><span class="quest-mark" aria-hidden="true"></span><span class="name">Senior High School, ICT Strand</span></button>
+            <div class="bento readout quest-grid" data-readout>
+              <div class="tile readout-list quest-list" role="tablist" aria-orientation="vertical" aria-label="Experience and education">
+                <p class="tile-label" role="presentation">Experience</p>
+                <button type="button" role="tab" id="tab-q1" aria-controls="quest-1"><span class="quest-mark is-active" aria-hidden="true"></span><span class="name">Freelance Automation Specialist</span><span class="name-short">Freelance</span></button>
+                <button type="button" role="tab" id="tab-q2" aria-controls="quest-2"><span class="quest-mark" aria-hidden="true"></span><span class="name">Marketing Automation Specialist</span><span class="name-short">Agency</span></button>
+                <button type="button" role="tab" id="tab-q3" aria-controls="quest-3"><span class="quest-mark" aria-hidden="true"></span><span class="name">Client Operations &amp; Support</span><span class="name-short">Client Ops</span></button>
+                <button type="button" role="tab" id="tab-q4" aria-controls="quest-4"><span class="quest-mark is-active" aria-hidden="true"></span><span class="name">Data Analyst</span><span class="name-short">Data</span></button>
+                <p class="tile-label" role="presentation">Training</p>
+                <button type="button" role="tab" id="tab-q5" aria-controls="quest-5"><span class="quest-mark is-active" aria-hidden="true"></span><span class="name">BS Information Technology</span><span class="name-short">BSIT</span></button>
+                <button type="button" role="tab" id="tab-q6" aria-controls="quest-6"><span class="quest-mark" aria-hidden="true"></span><span class="name">Senior High School, ICT Strand</span><span class="name-short">Senior High</span></button>
               </div>
 
-              <div class="readout-detail">
+              <div class="tile readout-detail">
                 <article class="quest" role="tabpanel" id="quest-1" aria-labelledby="tab-q1">
-                  <p class="quest-state">ACTIVE</p>
-                  <h3>Freelance GoHighLevel Specialist</h3>
-                  <p class="quest-meta">Self-Employed | August 2025 – Present | Remote</p>
+                  <h3>Freelance Automation Specialist</h3>
+                  <p class="quest-meta"><span class="quest-state">ACTIVE</span> Self-Employed | August 2025 – Present | Remote</p>
                   <ul>
-                    <li>Providing independent CRM customization, automation, and funnel-building services to startups and small businesses</li>
-                    <li>Consulting with business owners on SMS compliance, workflow efficiency, and onboarding automation</li>
-                    <li>Creating targeted email campaigns and lead nurturing strategies to improve client retention and conversion</li>
-                    <li>Delivering end-to-end marketing solutions integrating GoHighLevel with third-party tools</li>
+                    <li>Provide independent end-to-end GoHighLevel setups, custom CRM architecture, and advanced workflow automations for startups, agencies, and small businesses</li>
+                    <li>Design and build high-converting sales funnels, responsive landing pages, and dynamic appointment booking systems</li>
+                    <li>Architect multi-step email drip sequences and lead-nurturing campaigns to improve conversion and retention rates</li>
+                    <li>Guide business owners through A2P 10DLC SMS compliance, Brand/Campaign verification, and deliverability optimization</li>
+                    <li>Implement conversational AI call prompting, voice agents, and chatbot workflows to automate outreach and qualification</li>
                   </ul>
                 </article>
                 <article class="quest" role="tabpanel" id="quest-2" aria-labelledby="tab-q2">
-                  <p class="quest-state">COMPLETED</p>
-                  <h3>GoHighLevel Specialist</h3>
-                  <p class="quest-meta">Marketing Automation Agency | July 2024 – July 2025 | On-site</p>
+                  <h3>Marketing Automation Specialist</h3>
+                  <p class="quest-meta"><span class="quest-state">COMPLETED</span> Marketing Automation Agency | July 2024 – July 2025 | On-site</p>
                   <ul>
-                    <li>Worked with multiple clients across home services, digital marketing, and wellness industries</li>
-                    <li>Migrated CRM data, customized pipelines, and created tailored dashboard reports</li>
-                    <li>Developed automated workflows for lead response, appointment reminders, job scheduling, and invoice follow-ups</li>
-                    <li>Managed A2P 10DLC SMS registration and compliance with successful campaign launches</li>
-                    <li>Built high-converting funnels and 7-step email sequences, increasing engagement and conversion rates</li>
-                    <li>Integrated n8n, Zapier, and Closebot for advanced automation</li>
+                    <li>Managed CRM systems, marketing automations, and digital operations for multiple client accounts across home services, digital marketing, and wellness industries</li>
+                    <li>Migrated CRM databases, multi-stage pipelines, and custom fields with zero data loss and minimal transition downtime</li>
+                    <li>Developed automated workflows for instant lead response, booking confirmations, dispatching, and automated invoice reminders</li>
+                    <li>Handled A2P 10DLC registration, Brand/Campaign approvals, and carrier compliance across client sub-accounts</li>
+                    <li>Integrated third-party automation tools including Zapier, n8n, and Closebot to synchronize cross-platform client workflows</li>
+                    <li>Set up conversion tracking, UTM parameters, and performance dashboards for Facebook and Google Ads campaigns</li>
                   </ul>
                 </article>
                 <article class="quest" role="tabpanel" id="quest-3" aria-labelledby="tab-q3">
-                  <p class="quest-state">ACTIVE</p>
+                  <h3>Client Operations &amp; Support</h3>
+                  <p class="quest-meta">Client accounts | Duda, Shopify, GoHighLevel</p>
+                  <ul>
+                    <li>Executed 80+ operational and client support tasks across diverse accounts with high accuracy and strict adherence to deadlines</li>
+                    <li>Managed CRM updates, client communications, appointment scheduling, and cross-functional task tracking</li>
+                    <li>Published and formatted SEO-friendly blog content across client Duda and Shopify websites while maintaining brand guidelines</li>
+                    <li>Supported GoHighLevel maintenance, including contact database updates, funnel modifications, and automation troubleshooting</li>
+                    <li>Collaborated closely with account managers and project leads to streamline client deliverables and project workflows</li>
+                  </ul>
+                </article>
+                <article class="quest" role="tabpanel" id="quest-4" aria-labelledby="tab-q4">
                   <h3>Data Analyst</h3>
-                  <p class="quest-meta">Various Projects | 2023 – Present | Remote/On-site</p>
+                  <p class="quest-meta"><span class="quest-state">ACTIVE</span> Various Projects | 2023 – Present | Remote/On-site</p>
                   <ul>
                     <li>Analyzed complex datasets to identify trends, patterns, and actionable insights for business decision-making</li>
                     <li>Created comprehensive data visualizations and dashboards using tools like Excel, Python, and SQL</li>
@@ -316,19 +429,17 @@
                     <li>Conducted statistical analysis and predictive modeling to forecast business outcomes</li>
                   </ul>
                 </article>
-                <article class="quest" role="tabpanel" id="quest-4" aria-labelledby="tab-q4">
-                  <p class="quest-state">ACTIVE</p>
+                <article class="quest" role="tabpanel" id="quest-5" aria-labelledby="tab-q5">
                   <h3>Bachelor of Science in Information Technology (BSIT)</h3>
-                  <p class="quest-meta">Expected Graduation: 2027</p>
+                  <p class="quest-meta"><span class="quest-state">ACTIVE</span> Expected Graduation: 2027</p>
                   <ul>
                     <li>College of Computing and Information Sciences (CCIS)</li>
                     <li>Caraga State University – Ampayon, Butuan City</li>
                   </ul>
                 </article>
-                <article class="quest" role="tabpanel" id="quest-5" aria-labelledby="tab-q5">
-                  <p class="quest-state">COMPLETED</p>
+                <article class="quest" role="tabpanel" id="quest-6" aria-labelledby="tab-q6">
                   <h3>Senior High School – ICT Strand</h3>
-                  <p class="quest-meta">Graduated: 2020</p>
+                  <p class="quest-meta"><span class="quest-state">COMPLETED</span> Graduated: 2020</p>
                   <ul>
                     <li>Saint Michael College of Caraga</li>
                   </ul>
@@ -343,8 +454,8 @@
               <h2>Radio</h2>
               <p>Pick a frequency. Email is the best way to request a consultation.</p>
             </header>
-            <div class="radio">
-              <ul class="stations">
+            <div class="bento radio-grid">
+              <ul class="tile stations">
                 <li>
                   <a class="station" href="mailto:owensoreno@gmail.com?subject=Consultation%20request" data-wave="1">
                     <span class="station-type">Email</span>
@@ -377,8 +488,11 @@
                 </li>
               </ul>
 
-              <div class="signal">
+              <div class="tile signal">
                 <canvas id="waveform" aria-hidden="true"></canvas>
+              </div>
+
+              <div class="tile radio-cta">
                 <p class="signal-text">Now broadcasting from Nasipit, Agusan del Norte</p>
                 <div class="actions">
                   <a
@@ -390,12 +504,12 @@
                 </div>
                 <p class="copy-status" id="copyStatus" role="status"></p>
               </div>
-            </div>
 
-            <footer class="legal">
-              <p>&copy; <span id="year">2026</span> Owen Kliezer B. Soreño. All rights reserved.</p>
-              <p>Fallout-inspired fan styling. Not affiliated with Bethesda Softworks.</p>
-            </footer>
+              <footer class="tile legal">
+                <p>&copy; <span id="year">2026</span> Owen Kliezer B. Soreño. All rights reserved.</p>
+                <p>Fallout-inspired fan styling. Not affiliated with Bethesda Softworks.</p>
+              </footer>
+            </div>
           </section>
         </main>
 

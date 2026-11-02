@@ -92,8 +92,7 @@ button {
     height: 100dvh;
     max-height: 880px;
     padding: 0 clamp(6px, 1.5vw, 22px) clamp(6px, 1.5vw, 22px);
-    background:
-        linear-gradient(160deg, var(--metal-light) 0%, var(--metal) 45%, var(--metal-dark) 100%);
+    background: linear-gradient(160deg, var(--metal-light) 0%, var(--metal) 45%, var(--metal-dark) 100%);
     border-radius: clamp(0px, 2vw, 26px);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.14),
@@ -107,7 +106,7 @@ button {
     justify-content: space-between;
     align-items: center;
     gap: 0.25rem 1rem;
-    padding: 0.55rem 1rem;
+    padding: 0.45rem 1rem;
     color: var(--plate-text);
 }
 
@@ -140,8 +139,8 @@ button {
 }
 
 .switch {
-    min-height: 32px;
-    padding: 0.15rem 0.65rem;
+    min-height: 30px;
+    padding: 0.1rem 0.65rem;
     font-size: 0.8125rem;
     color: var(--plate-text);
     background: linear-gradient(180deg, #2f3129 0%, #17180f 100%);
@@ -169,7 +168,7 @@ button {
     min-height: 0;
     display: flex;
     flex-direction: column;
-    padding: clamp(0.5rem, 1.5vw, 1.25rem) clamp(0.6rem, 2vw, 1.75rem) 0.5rem;
+    padding: clamp(0.4rem, 1vw, 0.9rem) clamp(0.5rem, 1.5vw, 1.25rem) 0.45rem;
     overflow: hidden;
     background: radial-gradient(ellipse at center, var(--screen) 55%, var(--screen-edge) 100%);
     border: 3px solid #000;
@@ -250,8 +249,8 @@ button {
     flex-direction: column;
     align-items: center;
     min-width: 0;
-    padding: 0.35rem 0.15rem 0.3rem;
-    line-height: 1.1;
+    padding: 0.25rem 0.15rem 0.2rem;
+    line-height: 1.05;
     text-decoration: none;
     color: var(--phosphor-dim);
     border: 1px solid transparent;
@@ -260,7 +259,7 @@ button {
 
 .tab b {
     font-family: var(--font-display);
-    font-size: clamp(1.25rem, 3.4vw, 1.9rem);
+    font-size: clamp(1.25rem, 3vw, 1.7rem);
     font-weight: 400;
     letter-spacing: 0.04em;
 }
@@ -283,14 +282,31 @@ button {
     outline-offset: -3px;
 }
 
-/* Panels */
+/* Panels fill the screen; type scales so each tab fits without scrolling */
 .panels {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    padding: clamp(0.9rem, 2.4vw, 1.75rem) clamp(0.25rem, 1.5vw, 1rem);
+    padding: 0.5rem 0;
+    container-type: size;
     scrollbar-color: var(--phosphor-dim) transparent;
     scrollbar-width: thin;
+}
+
+.js .panels {
+    overflow: hidden;
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: clamp(0.8125rem, min(2.75cqh, 4cqw), 1.0625rem);
+    line-height: 1.38;
+}
+
+.js .panel {
+    height: 100%;
 }
 
 .panel:focus,
@@ -312,14 +328,16 @@ button {
 }
 
 .panel-head {
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.6rem;
-    border-bottom: 1px solid var(--phosphor-dim);
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 1rem;
 }
 
 .panel-head h2 {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-size: 2em;
     font-weight: 400;
     line-height: 1;
     letter-spacing: 0.03em;
@@ -328,62 +346,138 @@ button {
 }
 
 .panel-head p {
-    margin-top: 0.35rem;
+    color: var(--phosphor-dim);
+}
+
+/* Bento tiles */
+.bento {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.tile {
+    min-width: 0;
+    min-height: 0;
+    padding: 0.6em 0.8em;
+    overflow: auto;
+    border: 1px solid var(--phosphor-dim);
+    scrollbar-color: var(--phosphor-dim) transparent;
+    scrollbar-width: thin;
+}
+
+.tile-label {
+    margin-bottom: 0.3em;
+    font-size: 0.85em;
+    font-weight: 400;
+    text-transform: uppercase;
     color: var(--phosphor-dim);
 }
 
 /* STAT */
-.stat {
-    display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(280px, 2fr);
-    gap: clamp(1.5rem, 4vw, 3.5rem);
-    align-items: center;
-    min-height: 100%;
+.stat-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1.15fr) minmax(0, 1fr) auto;
 }
 
-.eyebrow {
-    margin-bottom: 0.5rem;
+.hero {
+    grid-column: 1 / 8;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.8em 1.2em;
+}
+
+.id-photo {
+    grid-column: 8 / 13;
+    grid-row: 1;
+    position: relative;
+    isolation: isolate;
+    padding: 0;
+    overflow: hidden;
+    background: var(--screen);
+}
+
+.id-data {
+    grid-column: 8 / 13;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 0.92em;
+}
+
+.stat-tile {
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+    font-size: 0.88em;
+    line-height: 1.25;
+}
+
+.stat-num {
+    font-family: var(--font-display);
+    font-size: 2.9em;
+    line-height: 0.9;
+    text-shadow: 0 0 10px var(--phosphor-glow);
+}
+
+.stat-tile b {
+    display: block;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.stat-tile span {
     color: var(--phosphor-dim);
 }
 
-.stat h1 {
+.eyebrow {
+    margin-bottom: 0.3em;
+    color: var(--phosphor-dim);
+}
+
+.hero h1 {
     font-family: var(--font-display);
-    font-size: clamp(2.75rem, 7.2vw, 5.25rem);
+    font-size: clamp(2.2rem, min(11cqh, 6.4cqw), 4.75rem);
     font-weight: 400;
     line-height: 0.95;
     text-shadow: 0 0 14px var(--phosphor-glow);
 }
 
 .role-line {
-    margin: 0.75rem 0 1.25rem;
-    padding-bottom: 1rem;
+    margin: 0.45em 0 0.7em;
+    padding-bottom: 0.6em;
     color: var(--phosphor-dim);
     border-bottom: 1px solid var(--phosphor-dim);
 }
 
-.stat-text p + p {
-    margin-top: 0.75rem;
+.lede {
+    font-size: 1.15em;
+    line-height: 1.32;
 }
 
-.stat-text .lede {
-    font-size: 1.25rem;
-    line-height: 1.4;
+.lede-more {
+    margin-top: 0.55em;
 }
 
 .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+    gap: 0.6em;
+    margin-top: 0.9em;
 }
 
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 46px;
-    padding: 0.5rem 1.15rem;
-    font-size: 1rem;
+    min-height: 40px;
+    padding: 0.3em 1em;
+    font-size: 0.95em;
     text-decoration: none;
     text-transform: uppercase;
     color: var(--phosphor);
@@ -401,20 +495,9 @@ button {
     box-shadow: 0 0 16px var(--phosphor-glow);
 }
 
-.id-card {
-    border: 1px solid var(--phosphor-dim);
-}
-
-.id-photo {
-    position: relative;
-    isolation: isolate;
-    height: clamp(180px, 34vh, 280px);
-    overflow: hidden;
-    background: var(--screen);
-    border-bottom: 1px solid var(--phosphor-dim);
-}
-
 .id-photo img {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
     height: 100%;
@@ -434,16 +517,11 @@ button {
     mix-blend-mode: multiply;
 }
 
-.id-data {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9375rem;
-}
-
 .id-data div {
     display: grid;
-    grid-template-columns: 5.5rem 1fr;
-    gap: 0.5rem;
-    padding: 0.2rem 0;
+    grid-template-columns: 5.5em 1fr;
+    gap: 0.4em;
+    padding: 0.08em 0;
 }
 
 .id-data dt {
@@ -451,36 +529,53 @@ button {
 }
 
 /* INV */
-.inv {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1.5rem, 4vw, 3.5rem);
+.inv-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
 }
 
-.group-title {
-    margin-bottom: 0.75rem;
-    font-family: var(--font-display);
-    font-size: 1.75rem;
-    font-weight: 400;
-    line-height: 1.1;
-    text-transform: uppercase;
+.inv-weapons {
+    grid-column: 1 / 6;
+    grid-row: 1 / 4;
+    display: flex;
+    flex-direction: column;
 }
 
-.group-title span {
-    display: block;
-    font-family: var(--font-body);
-    font-size: 0.875rem;
-    text-transform: none;
-    color: var(--phosphor-dim);
+.inv-expert,
+.inv-intermediate,
+.inv-advanced,
+.inv-other {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inv-expert {
+    grid-column: 6 / 9;
+}
+
+.inv-intermediate {
+    grid-column: 9 / 13;
+}
+
+.inv-advanced,
+.inv-other {
+    grid-column: 6 / 13;
+}
+
+.inv-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .inv-row {
     display: grid;
-    grid-template-columns: 6.5rem 1fr 2rem;
-    gap: 0.75rem;
+    grid-template-columns: 6.2em 1fr 1.8em;
+    gap: 0.6em;
     align-items: center;
-    padding: 0.55rem 0.5rem;
-    border-bottom: 1px solid var(--phosphor-faint);
+    padding: 0.2em 0.3em;
 }
 
 .inv-row:hover {
@@ -489,7 +584,7 @@ button {
 
 .bar {
     display: block;
-    height: 14px;
+    height: 0.85em;
     padding: 2px;
     border: 1px solid var(--phosphor-dim);
 }
@@ -516,44 +611,28 @@ button {
     text-align: right;
 }
 
-.rank {
-    margin: 0.9rem 0 0.4rem;
-    font-size: 0.875rem;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: var(--phosphor-dim);
-}
-
-.rank:first-of-type {
-    margin-top: 0;
-}
-
 .gear-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: 0.3em;
 }
 
 .gear-list li {
-    padding: 0.15rem 0.6rem;
-    font-size: 0.9375rem;
+    padding: 0 0.5em;
+    font-size: 0.92em;
     border: 1px solid var(--phosphor-dim);
 }
 
 /* Master/detail lists (SPECIAL and DATA) */
-.readout {
-    display: grid;
-    grid-template-columns: minmax(250px, 2fr) minmax(0, 3fr);
-    gap: clamp(1rem, 3vw, 2.5rem);
-}
-
 .readout-list button {
     display: flex;
+    flex: 1 1 0;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.6em;
     width: 100%;
-    min-height: 40px;
-    padding: 0.2rem 0.6rem;
+    min-height: 1.7em;
+    padding: 0 0.5em;
+    line-height: 1.15;
     text-align: left;
 }
 
@@ -567,67 +646,106 @@ button {
     text-shadow: 0 0 1px var(--screen);
 }
 
-.list-label {
-    margin: 0.75rem 0 0.25rem;
-    padding: 0 0.6rem;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    color: var(--phosphor-dim);
+.readout-detail {
+    padding: 0.8em 1.2em;
 }
 
-.list-label:first-child {
-    margin-top: 0;
+.name-short {
+    display: none;
 }
 
 .letter {
-    flex: 0 0 1.25rem;
+    flex: 0 0 1em;
     font-family: var(--font-display);
-    font-size: 1.75rem;
+    font-size: 1.6em;
     line-height: 1;
     text-align: center;
 }
 
-.service,
-.quest {
-    padding-left: clamp(0rem, 2vw, 1.5rem);
-    border-left: 1px solid var(--phosphor-dim);
+.special-grid {
+    grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.5fr);
+}
+
+.special-grid .readout-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 0.5rem;
+    min-height: 0;
+}
+
+.special-attrs,
+.special-perks,
+.quest-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.special-attrs,
+.special-perks {
+    padding: 0.4em;
+}
+
+.special-perks .tile-label {
+    margin: 0;
+    padding: 0.1em 0.5em;
 }
 
 .service h3,
 .quest h3 {
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 3.6vw, 2.25rem);
+    font-size: 1.95em;
     font-weight: 400;
-    line-height: 1.1;
+    line-height: 1.05;
 }
 
 .service p {
-    margin-top: 0.6rem;
+    margin-top: 0.5em;
 }
 
 .glyph {
     display: block;
+    margin-bottom: 0.1em;
     font-family: var(--font-display);
-    font-size: clamp(5rem, 16vw, 9rem);
+    font-size: min(5.5em, 19cqh);
     line-height: 0.85;
     text-shadow: 0 0 22px var(--phosphor-glow);
 }
 
-.record {
-    margin-top: 1.25rem !important;
-    padding-top: 0.75rem;
+.service .record {
+    margin-top: 0.9em;
+    padding-top: 0.55em;
     border-top: 1px dashed var(--phosphor-dim);
-    color: var(--phosphor);
 }
 
 .record b {
     display: block;
-    font-size: 0.8125rem;
+    font-size: 0.8em;
     font-weight: 400;
     color: var(--phosphor-dim);
 }
 
 /* Quest log */
+.quest-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr);
+}
+
+.quest-list {
+    padding: 0.5em;
+}
+
+.quest-list .tile-label {
+    margin: 0.4em 0 0.1em;
+    padding: 0 0.5em;
+}
+
+.quest-list .tile-label:first-child {
+    margin-top: 0;
+}
+
+.quest-list button {
+    flex: 0 1 2.3em;
+}
+
 .quest-mark {
     flex: 0 0 10px;
     width: 10px;
@@ -641,48 +759,62 @@ button {
 
 .quest-state {
     display: inline-block;
-    margin-bottom: 0.4rem;
-    padding: 0 0.45rem;
-    font-size: 0.8125rem;
+    margin-right: 0.4em;
+    padding: 0 0.4em;
+    font-size: 0.85em;
+    color: var(--phosphor);
     border: 1px solid var(--phosphor-dim);
 }
 
 .quest-meta {
-    margin: 0.25rem 0 1rem;
+    margin: 0.2em 0 0.65em;
     color: var(--phosphor-dim);
 }
 
 .quest ul li {
     position: relative;
-    margin-bottom: 0.5rem;
-    padding-left: 1.25rem;
+    margin-bottom: 0.4em;
+    padding-left: 1.15em;
 }
 
 .quest ul li::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 0.5em;
+    top: 0.45em;
     width: 8px;
     height: 8px;
     border: 1px solid var(--phosphor-dim);
 }
 
 /* Radio */
-.radio {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(1rem, 3vw, 2.5rem);
+.radio-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr) auto auto;
+}
+
+.stations {
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    padding: 0.4em;
+}
+
+.stations li {
+    flex: 1;
+    display: flex;
+    min-height: 0;
 }
 
 .station {
+    flex: 1;
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 0 1rem;
-    padding: 0.7rem 0.6rem;
+    gap: 0 1em;
+    padding: 0.1em 0.5em;
     text-decoration: none;
-    border-bottom: 1px solid var(--phosphor-faint);
 }
 
 .station:hover,
@@ -700,30 +832,43 @@ button {
     overflow-wrap: anywhere;
 }
 
+.signal {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+}
+
 #waveform {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
-    height: clamp(110px, 24vh, 190px);
-    border: 1px solid var(--phosphor-dim);
+    height: 100%;
 }
 
 .signal-text {
-    margin-top: 0.6rem;
     color: var(--phosphor-dim);
+}
+
+.radio-cta .actions {
+    margin-top: 0.5em;
 }
 
 .copy-status {
-    min-height: 1.5em;
-    margin-top: 0.5rem;
-    font-size: 0.9375rem;
+    min-height: 1.38em;
+    margin-top: 0.3em;
+    font-size: 0.92em;
 }
 
 .legal {
-    margin-top: 1.25rem;
-    padding-top: 0.6rem;
-    font-size: 0.8125rem;
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 1.5em;
+    padding: 0.3em 0.8em;
+    font-size: 0.8em;
     color: var(--phosphor-dim);
-    border-top: 1px solid var(--phosphor-faint);
 }
 
 /* Status bar */
@@ -736,49 +881,158 @@ button {
 
 .status-bar span {
     flex: 1;
-    padding: 0.15rem 0.6rem;
+    padding: 0.05rem 0.6rem;
     white-space: nowrap;
     background: var(--phosphor-faint);
 }
 
-/* Responsive Design */
-@media (max-width: 860px) {
-    .stat,
-    .inv,
-    .radio {
-        grid-template-columns: minmax(0, 1fr);
+/* Short screens: drop the extras before anything has to scroll */
+@container (max-height: 540px) {
+    .eyebrow,
+    .lede-more,
+    .glyph,
+    .panel-head p {
+        display: none;
     }
 
-    .stat {
-        align-items: start;
+    .panel-head h2 {
+        font-size: 1.6em;
+    }
+}
+
+/* Portrait screens: tiles restack into a single tall bento */
+@container (max-width: 700px) {
+    .panel-head {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+    }
+
+    .panel {
+        gap: 0;
+    }
+
+    .bento {
+        gap: 0.35rem;
+    }
+
+    .tile {
+        padding: 0.45em 0.6em;
+    }
+
+    .stat-grid {
+        grid-template-rows: auto minmax(0, 1fr) auto auto;
+    }
+
+    .hero {
+        grid-column: 1 / -1;
+        grid-row: auto;
+        padding: 0.5em 0.7em;
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 11cqw, 3.5rem);
+    }
+
+    .eyebrow,
+    .lede-more,
+    .btn-secondary {
+        display: none;
+    }
+
+    .hero .btn-primary {
+        flex: 1;
+    }
+
+    .id-photo {
+        grid-column: 1 / 5;
+        grid-row: auto;
+    }
+
+    .id-data {
+        grid-column: 5 / -1;
+        grid-row: auto;
+    }
+
+    .id-data div {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 0.1em 0;
+    }
+
+    .id-data dt {
+        font-size: 0.82em;
+        line-height: 1.1;
+    }
+
+    .id-data dd {
+        line-height: 1.2;
+    }
+
+    .stat-tile {
+        grid-column: span 6;
+        font-size: 0.8em;
+    }
+
+    .stat-num {
+        font-size: 2.4em;
+    }
+
+    .inv-grid {
+        grid-template-rows: auto auto auto minmax(0, 1fr);
+    }
+
+    .inv-weapons {
+        grid-column: 1 / -1;
+        grid-row: auto;
+    }
+
+    .inv-expert {
+        grid-column: 1 / 6;
+    }
+
+    .inv-intermediate {
+        grid-column: 6 / -1;
+    }
+
+    .inv-advanced,
+    .inv-other {
+        grid-column: 1 / -1;
+    }
+
+    .inv-row {
+        padding: 0.05em 0;
     }
 
     .readout {
         grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
     }
 
-    .service,
-    .quest {
-        padding-left: 0;
-        padding-top: 1rem;
-        border-left: none;
-        border-top: 1px solid var(--phosphor-dim);
+    .readout-detail {
+        padding: 0.5em 0.7em;
     }
 
-    /* S P E C I A L as a single row of letters; the detail names the service */
-    .special-list {
-        display: grid;
-        grid-template-columns: repeat(7, minmax(0, 1fr));
-        gap: 2px;
+    /* S P E C I A L as one row of letters; the detail names the service */
+    .special-grid .readout-list {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.35rem;
     }
 
-    .special-list button {
+    .special-attrs {
+        flex-direction: row;
+        padding: 0.2em;
+    }
+
+    .special-attrs button {
         justify-content: center;
-        min-height: 46px;
+        min-height: 40px;
         padding: 0;
     }
 
-    .special-list button:not(.perk) .name {
+    .special-attrs .name {
         position: absolute;
         width: 1px;
         height: 1px;
@@ -787,32 +1041,162 @@ button {
         white-space: nowrap;
     }
 
-    .special-list .perk {
-        grid-column: span 7;
-        justify-content: flex-start;
-        padding: 0 0.6rem;
+    .special-perks {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px 0.3em;
+        padding: 0.2em;
     }
 
-    .special-list .list-label {
+    .special-perks .tile-label {
         grid-column: 1 / -1;
     }
 
-    .glyph {
-        font-size: 4.5rem;
+    .special-perks button {
+        min-height: 30px;
+        padding: 0 0.4em;
     }
 
+    .quest-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px 0.25em;
+        padding: 0.2em;
+    }
+
+    .quest-list .tile-label {
+        display: none;
+    }
+
+    .quest-list button {
+        min-height: 36px;
+        gap: 0.35em;
+        padding: 0 0.35em;
+    }
+
+    .quest-list .name {
+        display: none;
+    }
+
+    .quest-list .name-short {
+        display: inline;
+    }
+
+    .service .record {
+        margin-top: 0.6em;
+    }
+
+    .glyph {
+        display: none;
+    }
+
+    .quest h3,
+    .service h3 {
+        font-size: 1.7em;
+    }
+
+    .quest ul li {
+        margin-bottom: 0.25em;
+    }
+
+    .quest-meta {
+        margin-bottom: 0.4em;
+    }
+
+    .radio-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(60px, 1fr) auto auto;
+    }
+
+    .stations {
+        grid-row: auto;
+    }
+
+    .stations li {
+        min-height: 38px;
+    }
+}
+
+/* Tiniest screens: keep only the essentials on the ID card */
+@container (max-width: 700px) and (max-height: 430px) {
+    .id-data .id-class,
+    .id-data .id-fields {
+        display: none;
+    }
+}
+
+/* Small phones: tighten type and trim the stat captions */
+@container (max-width: 700px) and (max-height: 540px) {
+    .panel {
+        font-size: 0.75rem;
+        line-height: 1.25;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .role-line {
+        margin: 0.2em 0 0.35em;
+        padding-bottom: 0.3em;
+    }
+
+    .actions {
+        margin-top: 0.5em;
+    }
+
+    .stat-tile span {
+        display: none;
+    }
+
+    .stat-num {
+        font-size: 2em;
+    }
+
+    .stat-tile {
+        grid-column: span 3;
+        padding: 0.3em 0.4em;
+    }
+
+    .stat-tile b {
+        font-size: 0.85em;
+    }
+
+    .stat-grid {
+        grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+
+    .id-data dd {
+        line-height: 1.15;
+    }
+
+    .quest ul li {
+        margin-bottom: 0.15em;
+    }
+
+    .special-perks button {
+        min-height: 26px;
+    }
+
+    .stations li {
+        min-height: 30px;
+    }
+
+    .inv-other .gear-list li,
+    .inv-advanced .gear-list li {
+        font-size: 0.88em;
+    }
+}
+
+@media (max-width: 860px) {
     .key-hint {
         display: none;
     }
 }
 
 @media (max-width: 480px) {
-    body {
-        font-size: 1rem;
-    }
-
     .plate {
-        padding: 0.4rem 0.35rem;
+        padding: 0.3rem 0.35rem;
     }
 
     .plate-name {
@@ -824,23 +1208,8 @@ button {
         font-size: 0.75rem;
     }
 
-    .actions .btn {
-        flex: 1 1 100%;
-    }
-
     .tab {
         flex: 1 1 auto;
-    }
-
-    /* Keep the main button above the fold */
-    .lede-more,
-    .eyebrow {
-        display: none;
-    }
-
-    .inv-row {
-        grid-template-columns: 5.75rem 1fr 1.75rem;
-        padding-inline: 0.25rem;
     }
 }
 
@@ -884,17 +1253,25 @@ button {
 
     .device,
     .screen,
-    .panels {
+    .panels,
+    .panel,
+    .bento,
+    .readout-detail,
+    .tile {
         display: block;
-        height: auto;
+        height: auto !important;
         max-height: none;
-        overflow: visible;
+        overflow: visible !important;
         padding: 0;
         color: #000;
         background: none;
         border: none;
         box-shadow: none;
         text-shadow: none;
+    }
+
+    .panels {
+        container-type: normal;
     }
 
     .plate,
@@ -905,7 +1282,8 @@ button {
     .readout-list,
     .glyph,
     .actions,
-    #waveform,
+    .signal,
+    .signal-text,
     .copy-status,
     .screen::before,
     .screen::after,
@@ -920,9 +1298,14 @@ button {
 
     .panel {
         margin-bottom: 1.5rem;
+        font-size: 11pt;
     }
 
-    .readout {
+    .tile {
+        margin-bottom: 0.5rem;
+    }
+
+    .panel-head {
         display: block;
     }
 

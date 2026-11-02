@@ -134,12 +134,6 @@ document.querySelectorAll('[data-readout]').forEach(readout => {
         item.addEventListener('click', function() {
             select(item);
             playTick();
-
-            // The list and detail are stacked on small screens
-            if (window.matchMedia('(max-width: 860px)').matches) {
-                const detail = document.getElementById(item.getAttribute('aria-controls'));
-                detail.scrollIntoView({ block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
-            }
         });
 
         item.addEventListener('keydown', function(e) {
