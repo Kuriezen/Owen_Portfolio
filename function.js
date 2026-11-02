@@ -1,361 +1,303 @@
-// Smooth scrolling for navigation
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Storage can throw in private windows, so settings just stop persisting there
+function readSetting(storageName, key) {
+    try {
+        return window[storageName].getItem(key);
+    } catch (e) {
+        return null;
+    }
+}
+
+function saveSetting(storageName, key, value) {
+    try {
+        window[storageName].setItem(key, value);
+    } catch (e) {}
+}
+
+// Sound effects, off until the visitor turns them on
+let soundOn = false;
+let audioContext = null;
+
+function playTick() {
+    if (!soundOn) return;
+    audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    const now = audioContext.currentTime;
+
+    oscillator.type = 'square';
+    oscillator.frequency.value = 1400;
+    gain.gain.setValueAtTime(0.03, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+    oscillator.connect(gain).connect(audioContext.destination);
+    oscillator.start(now);
+    oscillator.stop(now + 0.05);
+}
+
+const soundToggle = document.getElementById('soundToggle');
+soundToggle.addEventListener('click', function() {
+    soundOn = !soundOn;
+    this.setAttribute('aria-pressed', soundOn);
+    document.getElementById('soundLabel').textContent = soundOn ? 'ON' : 'OFF';
+    playTick();
 });
 
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.getElementById('navbar');
-    const scrollIndicator = document.getElementById('scrollIndicator');
-    
-    if (window.scrollY > 100) {
-        navbar.classList.add('scrolled');
+// Green / amber screen color
+const phosphorLabel = document.getElementById('phosphorLabel');
+
+function setPhosphorLabel() {
+    const isAmber = document.documentElement.dataset.phosphor === 'amber';
+    phosphorLabel.textContent = isAmber ? 'AMBER' : 'GREEN';
+    document.querySelector('meta[name="theme-color"]').content = isAmber ? '#130c02' : '#031108';
+}
+
+document.getElementById('phosphorToggle').addEventListener('click', function() {
+    const isAmber = document.documentElement.dataset.phosphor === 'amber';
+    if (isAmber) {
+        delete document.documentElement.dataset.phosphor;
     } else {
-        navbar.classList.remove('scrolled');
+        document.documentElement.dataset.phosphor = 'amber';
     }
-
-    // Update scroll indicator
-    const scrollTop = window.pageYOffset;
-    const docHeight = document.body.scrollHeight - window.innerHeight;
-    const scrollPercent = (scrollTop / docHeight) * 100;
-    scrollIndicator.style.width = scrollPercent + '%';
+    saveSetting('localStorage', 'phosphor', isAmber ? 'green' : 'amber');
+    setPhosphorLabel();
+    playTick();
 });
 
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+setPhosphorLabel();
 
-const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+// Main tabs, driven by the URL hash so links and the back button work
+const panelsContainer = document.getElementById('panels');
+const panels = Array.from(document.querySelectorAll('.panel'));
+const tabs = Array.from(document.querySelectorAll('.tab'));
+
+function showPanel(id, moveFocus) {
+    const target = panels.find(panel => panel.id === id) || panels[0];
+
+    panels.forEach(panel => {
+        panel.hidden = panel !== target;
+        panel.classList.toggle('is-entering', panel === target);
+    });
+    tabs.forEach(tab => {
+        if (tab.getAttribute('href') === `#${target.id}`) {
+            tab.setAttribute('aria-current', 'page');
+        } else {
+            tab.removeAttribute('aria-current');
         }
     });
-}, observerOptions);
 
-// Observe elements for animation
-document.querySelectorAll('.section-title, .service-card, .timeline-item, .language-item, .tool-item').forEach(el => {
-    observer.observe(el);
-});
-
-// Animate skill bars when they come into view
-const skillObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const progressBar = entry.target.querySelector('.skill-progress');
-            if (progressBar) {
-                const width = progressBar.getAttribute('data-width');
-                setTimeout(() => {
-                    progressBar.style.width = width + '%';
-                }, 200);
-            }
-            skillObserver.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.5 });
-
-// Observe skill items for progress bar animation
-document.querySelectorAll('.language-item').forEach(item => {
-    skillObserver.observe(item);
-});
-
-// Add staggered animation for tool items
-document.querySelectorAll('.tool-item').forEach((item, index) => {
-    item.style.transitionDelay = `${index * 0.1}s`;
-});
-
-// Profile image error handling
-document.addEventListener('DOMContentLoaded', function() {
-    const profileImg = document.querySelector('.profile-img');
-    const profileLetter = document.querySelector('.profile-letter');
-    
-    if (profileImg) {
-        profileImg.addEventListener('error', function() {
-            this.style.display = 'none';
-            if (profileLetter) {
-                profileLetter.style.display = 'block';
-            }
-        });
-        
-        profileImg.addEventListener('load', function() {
-            if (profileLetter) {
-                profileLetter.style.display = 'none';
-            }
-        });
-        
-        // Check if image source is placeholder
-        if (profileImg.src.includes('your-profile-image.jpg')) {
-            profileImg.style.display = 'none';
-            if (profileLetter) {
-                profileLetter.style.display = 'block';
-            }
-        }
-    }
-});
-
-// Form submission
-document.querySelector('.cta-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = this.querySelector('input[type="email"]').value;
-    
-    // Create success message
-    const button = this.querySelector('.cta-button');
-    const originalText = button.innerHTML;
-    
-    button.innerHTML = '<span>MESSAGE SENT!</span>';
-    button.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
-    button.style.color = '#fff';
-    
-    setTimeout(() => {
-        button.innerHTML = originalText;
-        button.style.background = '';
-        button.style.color = '';
-        this.reset();
-    }, 2000);
-});
-
-// Add floating animation to hero background
-let mouseX = 0;
-let mouseY = 0;
-
-document.addEventListener('mousemove', function(e) {
-    mouseX = (e.clientX / window.innerWidth) * 100;
-    mouseY = (e.clientY / window.innerHeight) * 100;
-    
-    const hero = document.querySelector('.hero::before');
-    if (hero) {
-        document.documentElement.style.setProperty('--mouse-x', mouseX + '%');
-        document.documentElement.style.setProperty('--mouse-y', mouseY + '%');
-    }
-});
-
-// Mobile menu toggle (for future enhancement)
-function toggleMobileMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    navLinks.classList.toggle('mobile-active');
+    panelsContainer.scrollTop = 0;
+    updateWaveform(target.id === 'contact');
+    if (moveFocus) target.focus({ preventScroll: true });
 }
 
-// Parallax effect for hero section
-window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    const rate = scrolled * -0.5;
-    
-    if (hero) {
-        hero.style.transform = `translateY(${rate}px)`;
-    }
+window.addEventListener('hashchange', function() {
+    const id = location.hash.slice(1);
+
+    // The skip link points at the container, not at a tab
+    if (id && !panels.some(panel => panel.id === id)) return;
+
+    showPanel(id, true);
+    playTick();
 });
 
-// Smooth reveal animations on page load
-window.addEventListener('load', function() {
-    // Add staggered animation delays to service cards
-    const serviceCards = document.querySelectorAll('.service-card');
-    serviceCards.forEach((card, index) => {
-        card.style.transitionDelay = `${index * 0.1}s`;
-    });
-    
-    // Add staggered animation delays to timeline items
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    timelineItems.forEach((item, index) => {
-        item.style.transitionDelay = `${index * 0.2}s`;
-    });
-});
-
-// Enhanced social media link interactions
-document.querySelectorAll('.social-link').forEach(link => {
-    link.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-5px) scale(1.1)';
-    });
-    
-    link.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
-});
-
-// Typing effect for main heading (optional enhancement)
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    type();
-}
-
-// Initialize typing effect on page load
-document.addEventListener('DOMContentLoaded', function() {
-    // Uncomment the lines below to enable typing effect
-    // const mainHeading = document.querySelector('.hero-text h1');
-    // if (mainHeading) {
-    //     const originalText = mainHeading.textContent;
-    //     typeWriter(mainHeading, originalText, 50);
-    // }
-});
-
-// Contact form validation enhancement
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-const emailInput = document.querySelector('.cta-input');
-if (emailInput) {
-    emailInput.addEventListener('input', function() {
-        const email = this.value;
-        const button = document.querySelector('.cta-button');
-        
-        if (validateEmail(email)) {
-            button.style.opacity = '1';
-            button.disabled = false;
-        } else if (email.length > 0) {
-            button.style.opacity = '0.7';
-            button.disabled = true;
-        }
-    });
-}
-
-// Add keyboard navigation support
+// Tab switching from the keyboard
 document.addEventListener('keydown', function(e) {
-    // Press 'h' to go to home
-    if (e.key === 'h' || e.key === 'H') {
-        document.querySelector('#home').scrollIntoView({ behavior: 'smooth' });
-    }
-    // Press 'k' to go to skills
-    if (e.key === 'k' || e.key === 'K') {
-        document.querySelector('#skills').scrollIntoView({ behavior: 'smooth' });
-    }
-    // Press 's' to go to services
-    if (e.key === 's' || e.key === 'S') {
-        document.querySelector('#services').scrollIntoView({ behavior: 'smooth' });
-    }
-    // Press 'e' to go to experience
-    if (e.key === 'e' || e.key === 'E') {
-        document.querySelector('#experience').scrollIntoView({ behavior: 'smooth' });
-    }
-    // Press 'c' to go to contact
-    if (e.key === 'c' || e.key === 'C') {
-        document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
-    }
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+
+    const current = tabs.findIndex(tab => tab.hasAttribute('aria-current'));
+    let next = -1;
+
+    if (e.key >= '1' && e.key <= String(tabs.length)) next = Number(e.key) - 1;
+    if (e.key === 'ArrowRight') next = (current + 1) % tabs.length;
+    if (e.key === 'ArrowLeft') next = (current - 1 + tabs.length) % tabs.length;
+
+    if (next >= 0) location.hash = tabs[next].getAttribute('href');
 });
 
-// Add dynamic background particles
-function createParticles() {
-    const hero = document.querySelector('.hero');
-    const particleCount = 20;
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.cssText = `
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation: float ${5 + Math.random() * 10}s ease-in-out infinite;
-            animation-delay: ${Math.random() * 5}s;
-        `;
-        hero.appendChild(particle);
+// Master/detail lists on the SPECIAL and DATA tabs
+document.querySelectorAll('[data-readout]').forEach(readout => {
+    const items = Array.from(readout.querySelectorAll('[role="tab"]'));
+    const details = Array.from(readout.querySelectorAll('[role="tabpanel"]'));
+
+    function select(item) {
+        items.forEach(other => {
+            const selected = other === item;
+            other.setAttribute('aria-selected', selected);
+            other.tabIndex = selected ? 0 : -1;
+            document.getElementById(other.getAttribute('aria-controls')).hidden = !selected;
+        });
     }
-}
 
-// Initialize particles on load
-document.addEventListener('DOMContentLoaded', createParticles);
+    items.forEach((item, index) => {
+        item.addEventListener('click', function() {
+            select(item);
+            playTick();
 
-// Add theme toggle functionality (future enhancement)
-function toggleTheme() {
-    document.body.classList.toggle('light-theme');
-    localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
-}
+            // The list and detail are stacked on small screens
+            if (window.matchMedia('(max-width: 860px)').matches) {
+                const detail = document.getElementById(item.getAttribute('aria-controls'));
+                detail.scrollIntoView({ block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
+            }
+        });
 
-// Load saved theme
-document.addEventListener('DOMContentLoaded', function() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-theme');
-    }
-});
+        item.addEventListener('keydown', function(e) {
+            let next = null;
+            if (e.key === 'ArrowDown') next = items[(index + 1) % items.length];
+            if (e.key === 'ArrowUp') next = items[(index - 1 + items.length) % items.length];
+            if (e.key === 'Home') next = items[0];
+            if (e.key === 'End') next = items[items.length - 1];
 
-// Add performance monitoring
-const performanceObserver = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-        if (entry.entryType === 'navigation') {
-            console.log('Page Load Time:', entry.loadEventEnd - entry.loadEventStart, 'ms');
-        }
-    }
-});
-
-if ('PerformanceObserver' in window) {
-    performanceObserver.observe({ entryTypes: ['navigation'] });
-}
-
-// Lazy loading for images (future enhancement)
-function lazyLoadImages() {
-    const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                imageObserver.unobserve(img);
+            if (next) {
+                e.preventDefault();
+                select(next);
+                next.focus();
+                playTick();
             }
         });
     });
 
-    images.forEach(img => imageObserver.observe(img));
-}
-
-// Initialize lazy loading
-document.addEventListener('DOMContentLoaded', lazyLoadImages);
-
-// Add smooth scrolling polyfill for older browsers
-if (!('scrollBehavior' in document.documentElement.style)) {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/gh/iamdustan/smoothscroll@master/src/smoothscroll.js';
-    document.head.appendChild(script);
-}
-
-// Add bounce effect to cards on hover
-document.querySelectorAll('.service-card, .profile-card, .timeline-item').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.02)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
+    if (details.length) select(items[0]);
 });
 
-// Smooth page transitions
-function smoothTransition() {
-    document.body.style.opacity = '0';
-    document.body.style.transform = 'translateY(20px)';
-    
-    setTimeout(() => {
-        document.body.style.transition = 'all 0.5s ease';
-        document.body.style.opacity = '1';
-        document.body.style.transform = 'translateY(0)';
-    }, 100);
+// Radio waveform, only drawn while the Radio tab is open
+const canvas = document.getElementById('waveform');
+const canvasContext = canvas.getContext('2d');
+let waveFrame = null;
+let waveDetail = 1;
+
+function drawWaveform(time) {
+    const ratio = window.devicePixelRatio || 1;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+
+    if (canvas.width !== Math.round(width * ratio) || canvas.height !== Math.round(height * ratio)) {
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+    }
+
+    const styles = getComputedStyle(document.documentElement);
+    canvasContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+    canvasContext.clearRect(0, 0, width, height);
+
+    // Scope grid
+    canvasContext.strokeStyle = styles.getPropertyValue('--phosphor-faint');
+    canvasContext.lineWidth = 1;
+    canvasContext.beginPath();
+    for (let x = 0; x <= width; x += width / 10) {
+        canvasContext.moveTo(x, 0);
+        canvasContext.lineTo(x, height);
+    }
+    for (let y = 0; y <= height; y += height / 4) {
+        canvasContext.moveTo(0, y);
+        canvasContext.lineTo(width, y);
+    }
+    canvasContext.stroke();
+
+    // Signal
+    const phase = time / 400;
+    canvasContext.strokeStyle = styles.getPropertyValue('--phosphor');
+    canvasContext.lineWidth = 2;
+    canvasContext.shadowColor = styles.getPropertyValue('--phosphor');
+    canvasContext.shadowBlur = 6;
+    canvasContext.beginPath();
+    for (let x = 0; x <= width; x += 2) {
+        const position = x / width;
+        const envelope = Math.sin(position * Math.PI);
+        const wave = Math.sin(position * 14 * waveDetail + phase)
+            + 0.5 * Math.sin(position * 37 * waveDetail - phase * 1.7);
+        const y = height / 2 + wave * envelope * height * 0.26;
+        if (x === 0) canvasContext.moveTo(x, y);
+        else canvasContext.lineTo(x, y);
+    }
+    canvasContext.stroke();
+    canvasContext.shadowBlur = 0;
+
+    if (!reducedMotion) waveFrame = requestAnimationFrame(drawWaveform);
 }
 
-// Initialize smooth transition on page load
-window.addEventListener('load', smoothTransition);
+function updateWaveform(isOpen) {
+    cancelAnimationFrame(waveFrame);
+    if (isOpen) waveFrame = requestAnimationFrame(drawWaveform);
+}
+
+document.querySelectorAll('.station').forEach(station => {
+    function tune() {
+        waveDetail = 0.6 + Number(station.dataset.wave) * 0.3;
+        if (reducedMotion) requestAnimationFrame(drawWaveform);
+    }
+    station.addEventListener('mouseenter', tune);
+    station.addEventListener('focus', tune);
+});
+
+// Copy email address
+const copyStatus = document.getElementById('copyStatus');
+
+document.getElementById('copyEmail').addEventListener('click', async function() {
+    try {
+        await navigator.clipboard.writeText('owensoreno@gmail.com');
+        copyStatus.textContent = '> Address copied to clipboard.';
+    } catch (e) {
+        copyStatus.textContent = '> Could not copy. The address is owensoreno@gmail.com';
+    }
+    playTick();
+});
+
+// Philippine time in the status bar
+const clock = document.getElementById('clock');
+const clockFormat = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Manila',
+    hour: '2-digit',
+    minute: '2-digit'
+});
+
+function updateClock() {
+    clock.textContent = clockFormat.format(new Date());
+}
+
+updateClock();
+setInterval(updateClock, 30000);
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Boot sequence, once per visit and skippable with any click or key
+function runBoot() {
+    if (reducedMotion || readSetting('sessionStorage', 'booted')) return;
+    saveSetting('sessionStorage', 'booted', '1');
+
+    const boot = document.getElementById('boot');
+    const lines = [
+        'OWEN-BOY 3000 BIOS v2.87',
+        'MEMORY CHECK ............ OK',
+        'LOADING PERSONNEL FILE .. SOREÑO, O.K.',
+        'SIGNAL ACQUIRED'
+    ];
+    let timer = null;
+    let index = 0;
+
+    function finish() {
+        clearTimeout(timer);
+        boot.hidden = true;
+        boot.removeEventListener('click', finish);
+        document.removeEventListener('keydown', finish);
+    }
+
+    function nextLine() {
+        if (index === lines.length) {
+            timer = setTimeout(finish, 300);
+            return;
+        }
+        boot.textContent += `${lines[index]}\n`;
+        index++;
+        timer = setTimeout(nextLine, 260);
+    }
+
+    boot.hidden = false;
+    boot.addEventListener('click', finish);
+    document.addEventListener('keydown', finish);
+    nextLine();
+}
+
+showPanel(location.hash.slice(1), false);
+runBoot();
